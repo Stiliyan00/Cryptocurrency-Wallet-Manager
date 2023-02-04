@@ -6,6 +6,8 @@ from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
 from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.CryptocurrencyDoesNotExistException import \
     CryptocurrencyDoesNotExistException
 from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import NotEnoughMoneyError
+from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.UserDoesNotHaveCryptocurrencyException import \
+    UserDoesNotHaveCryptocurrencyException
 
 
 class StandardUser(User):
@@ -47,9 +49,12 @@ class StandardUser(User):
             raise ValueError('Offering code cannot be None!')
 
     def __get_amount_of_cryptocurrency(self, offering_code: str, amount_money: float) -> float:
-        self.__validate_offering_code(offering_code)
         return amount_money * 100 / CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()[
             'rate']
+
+    def __get_money_for_amount_of_cryptocurrency(self, offering_code: str):
+        return CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()['rate'] * \
+               self.__assets[offering_code]
 
     def deposit_money(self, amount: float):
         if amount <= 0.0:
@@ -84,7 +89,9 @@ class StandardUser(User):
 
     def sell(self, offering_code: str):
         self.__validate_offering_code(offering_code)
-
+        if offering_code not in self.__assets:
+            raise UserDoesNotHaveCryptocurrencyException(offering_code)
+        self.__money += self.__get_money_for_amount_of_cryptocurrency(offering_code)
 
     def is_valid_password(self, password: str) -> bool:
         return password == self.__password
