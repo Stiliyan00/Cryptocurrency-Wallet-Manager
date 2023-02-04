@@ -1,12 +1,12 @@
 from typing import Dict
 
-from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \
     CryptocurrencyCoinsAPIClient
-from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
-from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.CryptocurrencyDoesNotExistException import \
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.CryptocurrencyDoesNotExistException import \
     CryptocurrencyDoesNotExistException
-from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import NotEnoughMoneyError
-from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.UserDoesNotHaveCryptocurrencyException import \
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import NotEnoughMoneyError
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.UserDoesNotHaveCryptocurrencyException import \
     UserDoesNotHaveCryptocurrencyException
 
 
