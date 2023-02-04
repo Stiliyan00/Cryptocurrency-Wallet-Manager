@@ -28,15 +28,6 @@ class User(ABC):
         pass
 
     @abstractmethod
-    def list_offerings(self) -> Dict[str, float]:
-        """
-        Allow the current user to see all available cryptocurrencies at the moment, which he/she may or may not
-        want to buy. The information is from CoinAPI (https://www.coinapi.io).
-        @return Returns a dictionary of all currently available cryptocurrencies and their prices.
-        """
-        pass
-
-    @abstractmethod
     def buy(self, offering_code: str, amount: float):
         """
         Allows the current user to bull a certain amount of a certain cryptocurrency, if there is enough deposit money
