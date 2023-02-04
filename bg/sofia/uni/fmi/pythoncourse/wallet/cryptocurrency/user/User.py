@@ -1,9 +1,23 @@
+from __future__ import annotations
+
+import json
 from abc import ABC, abstractmethod
 
 from typing import Dict
 
 
 class User(ABC):
+
+    @staticmethod
+    def of(line: str) -> User:
+        """
+        Allows 1 line of our database to be parsed to a User object.
+        """
+        if not str:
+            raise ValueError('The value of argument line in static method of in class User is invalid.')
+        user_json_dict = json.loads(line)
+
+        return
 
     @abstractmethod
     def deposit_money(self, amount: float):

@@ -23,6 +23,12 @@ class CryptocurrencyCoinsAPIClient:
         url = 'https://rest.coinapi.io/v1/exchangerate/' + asset_id_base + '/' + asset_id_quote + '/' + \
               'history?period_id=' + period_id + '&ime_start=' + time_start.strftime('%Y-%m-%dT%H:%M:%S') + \
               '&time_end=' + time_end.strftime('%Y-%m-%dT%H:%M:%S')
-        'BTC/USD/history?period_id=1MIN&time_start=2016-01-01T00:00:00&time_end=2016-02-01T00:00:00'
-        headers = {'X-CoinAPI-Key': '73034021-THIS-IS-SAMPLE-KEY'}
+        # 'BTC/USD/history?period_id=1MIN&time_start=2016-01-01T00:00:00&time_end=2016-02-01T00:00:00'
+        headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
+        return requests.get(url, headers=headers)
+
+    @staticmethod
+    def get_list_of_all_assets() -> Response:
+        url = 'https://rest.coinapi.io/v1/assets'
+        headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
         return requests.get(url, headers=headers)
