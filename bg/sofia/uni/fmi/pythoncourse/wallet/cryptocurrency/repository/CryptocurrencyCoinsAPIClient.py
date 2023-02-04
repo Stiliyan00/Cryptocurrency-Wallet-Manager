@@ -12,6 +12,12 @@ class CryptocurrencyCoinsAPIClient:
         return requests.get(url, headers=headers)
 
     @staticmethod
+    def get_specific_currency_data(asset_id_base: str) -> Response:
+        url = f'https://rest.coinapi.io/v1/exchangerate/{asset_id_base}/USD'
+        headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
+        return requests.get(url, headers=headers)
+
+    @staticmethod
     def get_all_current_rates_of_currency(asset_id_base: str) -> Response:
         url = 'https://rest.coinapi.io/v1/exchangerate/' + asset_id_base + '?invert=false'
         headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
@@ -32,3 +38,6 @@ class CryptocurrencyCoinsAPIClient:
         url = 'https://rest.coinapi.io/v1/assets'
         headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
         return requests.get(url, headers=headers)
+
+
+print(type(CryptocurrencyCoinsAPIClient.get_specific_currency_data(None).json()['rate']))

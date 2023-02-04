@@ -3,12 +3,15 @@ from typing import Dict
 from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \
     CryptocurrencyCoinsAPIClient
 from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
+from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.CryptocurrencyDoesNotExistException import \
+    CryptocurrencyDoesNotExistException
 from bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import NotEnoughMoneyError
 
 
 class StandardUser(User):
     PASSWORD_MINIMUM_LENGTH = 8
     PASSWORD_SPECIAL_SYMBOLS = ['@', '%', '#', '!', '*', '-', '_']
+    RESPONSE_STATUS_CODE_OK = 200
 
     def __init__(self, username: str, password: str, assets: dict):
         self.__validate_username(username)
@@ -34,8 +37,19 @@ class StandardUser(User):
             ValueError('Invalid password! Password should contain at least one symbol from the '
                        'following: ' + self.PASSWORD_SPECIAL_SYMBOLS.__str__())
 
-    def __cryptocurrency_exists(self, offering_code)-> bool:
-        return CryptocurrencyCoinsAPIClient.get_specific_rate_of_currency()
+    def __cryptocurrency_exists(self, offering_code) -> bool:
+        self.__validate_offering_code(offering_code)
+        return CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).status_code != \
+               self.RESPONSE_STATUS_CODE_OK
+
+    def __validate_offering_code(self, offering_code: str):
+        if offering_code is None:
+            raise ValueError('Offering code cannot be None!')
+
+    def __get_amount_of_cryptocurrency(self, offering_code: str, amount_money: float) -> float:
+        self.__validate_offering_code(offering_code)
+        return amount_money * 100 / CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()[
+            'rate']
 
     def deposit_money(self, amount: float):
         if amount <= 0.0:
@@ -54,17 +68,23 @@ class StandardUser(User):
         return result
 
     def buy(self, offering_code: str, amount: float):
+        self.__validate_offering_code(offering_code)
         # The amount is the money not the asset
         if amount <= 0.0:
             raise ValueError('The wanted cryptocurrency ' + offering_code + ' cannot be 0.0 or less!')
         if amount > self.__money:
             raise NotEnoughMoneyError(amount)
-        if
-        if self.__assets.get(offering_code) == None:
-            self.__assets[offering_code]
+        if not self.__cryptocurrency_exists(offering_code):
+            raise CryptocurrencyDoesNotExistException(offering_code)
+        if offering_code in self.__assets:
+            self.__money -= amount
+            self.__assets[offering_code] = self.__get_amount_of_cryptocurrency(offering_code, amount)
+        else:
+            self.__assets[offering_code] += self.__get_amount_of_cryptocurrency(offering_code, amount)
 
     def sell(self, offering_code: str):
-        pass
+        self.__validate_offering_code(offering_code)
+
 
     def is_valid_password(self, password: str) -> bool:
         return password == self.__password
