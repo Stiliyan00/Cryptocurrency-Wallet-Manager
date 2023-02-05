@@ -38,6 +38,3 @@ class CryptocurrencyCoinsAPIClient:
         url = 'https://rest.coinapi.io/v1/assets'
         headers = {'X-CoinAPI-Key': 'F5DFB3A6-F7DA-4645-8DDA-A8D713C18129'}
         return requests.get(url, headers=headers)
-
-
-print(type(CryptocurrencyCoinsAPIClient.get_specific_currency_data(None).json()['rate']))

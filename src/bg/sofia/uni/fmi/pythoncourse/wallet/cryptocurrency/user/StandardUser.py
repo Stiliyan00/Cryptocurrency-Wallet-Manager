@@ -1,43 +1,25 @@
-from typing import Dict
+import json
+from json import JSONEncoder
 
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \
     CryptocurrencyCoinsAPIClient
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.CryptocurrencyDoesNotExistException import \
     CryptocurrencyDoesNotExistException
-from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import NotEnoughMoneyError
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.NotEnoughMoneyError import \
+    NotEnoughMoneyError
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.exceptions.UserDoesNotHaveCryptocurrencyException import \
     UserDoesNotHaveCryptocurrencyException
 
 
 class StandardUser(User):
-    PASSWORD_MINIMUM_LENGTH = 8
-    PASSWORD_SPECIAL_SYMBOLS = ['@', '%', '#', '!', '*', '-', '_']
     RESPONSE_STATUS_CODE_OK = 200
 
-    def __init__(self, username: str, password: str, assets: dict):
-        self.__validate_username(username)
-        self.__validate_password(password)
+    def __init__(self, username: str, password: str, assets: dict, money=0):
         self.__username = username
         self.__password = password
-        self.__money = 0
+        self.__money = money
         self.__assets = assets
-
-    def __validate_username(self, username: str):
-        #     TODO("to check in the data base if the username is taken or not!")
-        if not username or not username.strip():
-            raise ValueError('Invalid username! Username cannot be an empty string')
-
-    def __validate_password(self, password: str):
-        if not password or not password.strip():
-            raise ValueError('Invalid password! Password cannot be an empty string!')
-
-        if len(password) < self.PASSWORD_MINIMUM_LENGTH:
-            raise ValueError('Invalid password! Password but be at least 8 symbols!')
-
-        if len(list(filter(lambda x: x in StandardUser.PASSWORD_SPECIAL_SYMBOLS, list(password)))) == 0:
-            ValueError('Invalid password! Password should contain at least one symbol from the '
-                       'following: ' + self.PASSWORD_SPECIAL_SYMBOLS.__str__())
 
     def __cryptocurrency_exists(self, offering_code) -> bool:
         self.__validate_offering_code(offering_code)
@@ -84,3 +66,34 @@ class StandardUser(User):
 
     def is_valid_password(self, password: str) -> bool:
         return password == self.__password
+
+    def get_username(self) -> str:
+        return self.__username
+
+    def get_money(self) -> float:
+        return self.__money
+
+    def get_assets(self) -> dict:
+        return self.__assets.copy()
+
+    def __iter__(self):
+        for key in self.__dict__:
+            yield key[len('_StandardUser__'):], getattr(self, key)
+
+
+class StandardUserEncoder(JSONEncoder):
+    def default(self, o):
+        if isinstance(o, StandardUser):
+            return {
+                "username": o.__getattribute__('_StandardUser__username'),
+                "password": o.__getattribute__('_StandardUser__password'),
+                'money': o.__getattribute__('_StandardUser__money'),
+                'assets': o.__getattribute__('_StandardUser__assets')
+            }
+
+
+def custom_standard_user_decoder(standard_user_dict) -> User:
+    return StandardUser(standard_user_dict['username'],
+                        standard_user_dict['password'],
+                        standard_user_dict['assets'],
+                        standard_user_dict['money'])

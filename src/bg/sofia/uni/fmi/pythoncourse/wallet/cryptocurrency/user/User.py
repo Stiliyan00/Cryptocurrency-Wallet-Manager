@@ -8,17 +8,6 @@ from typing import Dict
 
 class User(ABC):
 
-    @staticmethod
-    def of(line: str) -> User:
-        """
-        Allows 1 line of our database to be parsed to a User object.
-        """
-        if not str:
-            raise ValueError('The value of argument line in static method of in class User is invalid.')
-        user_json_dict = json.loads(line)
-
-        return
-
     @abstractmethod
     def deposit_money(self, amount: float):
         """
@@ -51,4 +40,17 @@ class User(ABC):
         @param password: The currently inputted password.
         @return: true if the value of password1 equals the current user's password value
         """
+        pass
+
+    @abstractmethod
+    def get_username(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_money(self) -> float:
+        pass
+
+
+    @abstractmethod
+    def get_assets(self) -> dict:
         pass

@@ -5,9 +5,10 @@ from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import Us
 
 class CryptocurrencyWallet(ABC):
     @abstractmethod
-    def get_current_user(self,) -> User:
+    def find_user_by_username(self, username: str) -> User:
         """
-        @return The current user using CryptocurrencyWallet.
+        @param username The user's username we want to find in our database of username.
+        @return The user with this username.
         """
     @abstractmethod
     def register(self, username: str, password: str):
@@ -27,9 +28,10 @@ class CryptocurrencyWallet(ABC):
         pass
 
     @abstractmethod
-    def get_wallet_summary(self) -> str:
+    def get_wallet_summary(self, username: str) -> str:
         """
-
+        @param username The username of the user we are searching information of.
+        @return Full information of all current investments and the money of a certain user.
         """
         pass
 

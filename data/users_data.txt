@@ -1,0 +1,24 @@
+[
+    {
+        "username": "stiliyan",
+        "password": "password1",
+        "money": 20000,
+        "assets": {
+            "BTC": 2.3455
+        }
+    },
+    {
+        "username": "bobi",
+        "password": "password1",
+        "money": 3450,
+        "assets": {
+            "BTC": 6.3455
+        }
+    },
+    {
+        "username": "teodor1234",
+        "password": "password4",
+        "money": 0,
+        "assets": {}
+    }
+]
