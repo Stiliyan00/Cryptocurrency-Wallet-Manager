@@ -1,7 +1,10 @@
 import json
 import os
+from datetime import datetime, date
 
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.CryptocurrencyWallet import CryptocurrencyWallet
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.exceptions.PasswordIsNotCorrectException import \
+    PasswordIsNotCorrectException
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.exceptions.UserAlreadyExistsException import \
     UserAlreadyExistsException
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.exceptions.UserDoesNotExistException import \
@@ -22,7 +25,7 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
         if not file_path:
             raise ValueError('The argument of the constructor cannot be None!')
         if not os.path.exists(file_path):
-            raise FileExistsError('The given file path does not exist!')
+            raise FileExistsError(f'The given file path {file_path} does not exist!')
         try:
             self.user_data_path = file_path
             users_data_file = open(file_path, 'r')
@@ -65,6 +68,18 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
         self.__validate_password(password)
         self.__users_set.add(StandardUser(username, password, {}))
 
+    def login(self, username: str, password: str) -> User:
+        if not username:
+            raise ValueError('The username cannot be None or an empty string.')
+        if not password:
+            raise ValueError('The password cannot be None or an empty string.')
+        user = self.find_user_by_username(username)
+        if user is None:
+            raise UserDoesNotExistException
+        if not user.is_valid_password(password):
+            raise PasswordIsNotCorrectException(username, password)
+        return user
+
     def store_users_data(self):
         # TODO("To think of a better way to store the data than first parsing the set of users to a user list of dicts")
         users_list = list()
@@ -88,11 +103,16 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
         json_str = CryptocurrencyCoinsAPIClient.get_list_of_all_assets().json()
         result = dict()
         for i in json_str:
+            print(i)
             # not optimal at all
-            if i['type_is_crypto'] == 1:
-                price_usd = \
-                    CryptocurrencyCoinsAPIClient.get_specific_rate_of_currency(i['asset_id'], 'USD').json()['rate']
-                result[i['asset_id']] = price_usd
+            date_object = datetime.strptime(i['data_end'], '%Y-%m-%d').date()
+            if i['type_is_crypto'] == 1 and not date_object < datetime.strptime(date.today().__str__(), '%Y-%m-%d').date():
+                try:
+                    price_usd = \
+                        CryptocurrencyCoinsAPIClient.get_specific_rate_of_currency(i['asset_id'], 'USD').json()['rate']
+                    result[i['asset_id']] = price_usd
+                except KeyError:
+                    pass
         return result
 
     def get_wallet_overall_summary(self) -> str:

@@ -23,16 +23,15 @@ class StandardUser(User):
 
     def __cryptocurrency_exists(self, offering_code) -> bool:
         self.__validate_offering_code(offering_code)
-        return CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).status_code != \
+        return CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).status_code == \
                self.RESPONSE_STATUS_CODE_OK
 
     def __validate_offering_code(self, offering_code: str):
         if offering_code is None:
             raise ValueError('Offering code cannot be None!')
 
-    def __get_amount_of_cryptocurrency(self, offering_code: str, amount_money: float) -> float:
-        return amount_money * 100 / CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()[
-            'rate']
+    def __get_value_of_cryptocurrency_by_amount(self, offering_code: str, amount: float) -> float:
+        return amount * CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()['rate']
 
     def __get_money_for_amount_of_cryptocurrency(self, offering_code: str):
         return CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json()['rate'] * \
@@ -48,21 +47,27 @@ class StandardUser(User):
         # The amount is the money not the asset
         if amount <= 0.0:
             raise ValueError('The wanted cryptocurrency ' + offering_code + ' cannot be 0.0 or less!')
-        if amount > self.__money:
-            raise NotEnoughMoneyError(amount)
         if not self.__cryptocurrency_exists(offering_code):
             raise CryptocurrencyDoesNotExistException(offering_code)
-        if offering_code in self.__assets:
-            self.__money -= amount
-            self.__assets[offering_code] = self.__get_amount_of_cryptocurrency(offering_code, amount)
-        else:
-            self.__assets[offering_code] += self.__get_amount_of_cryptocurrency(offering_code, amount)
 
-    def sell(self, offering_code: str):
+        value = self.__get_value_of_cryptocurrency_by_amount(offering_code, amount)
+        if value > self.__money:
+            raise NotEnoughMoneyError(amount)
+        self.__money -= value
+
+        if offering_code in self.__assets:
+            self.__assets[offering_code] += amount
+        else:
+            self.__assets[offering_code] = amount
+
+    def sell(self, offering_code: str) -> float:
         self.__validate_offering_code(offering_code)
         if offering_code not in self.__assets:
             raise UserDoesNotHaveCryptocurrencyException(offering_code)
-        self.__money += self.__get_money_for_amount_of_cryptocurrency(offering_code)
+        value: float = self.__get_money_for_amount_of_cryptocurrency(offering_code)
+        self.__money += value
+        self.__assets.pop(offering_code)  # Removing the asset from the list
+        return value
 
     def is_valid_password(self, password: str) -> bool:
         return password == self.__password
