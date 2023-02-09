@@ -2,8 +2,10 @@
     {
         "username": "stiliyan",
         "password": "password1",
-        "money": 73753.58497689749,
-        "assets": {}
+        "money": 6514.889130830037,
+        "assets": {
+            "BTC": 3.0
+        }
     },
     {
         "username": "bobi",

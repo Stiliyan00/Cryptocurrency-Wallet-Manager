@@ -22,9 +22,16 @@ class Command(ABC):
         return """
         you can enter commands:
                 disconnect
-                my-status
-                ...
-        """
+                get_wallet_summary
+                signup <username> <password>
+                login <username> <password>
+                buy <offering_code>
+                sell <offering_code>
+                buy <offering_code> <amount>
+                deposit <amount_of_money>
+                help
+                list_offerings
+                """
 
     @abstractmethod
     def get_wallet_summary(self, arguments: list) -> str:
