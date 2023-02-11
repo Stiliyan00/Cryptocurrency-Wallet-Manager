@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \
+    CryptocurrencyCoinsAPIClient
+
 
 class Command(ABC):
     @staticmethod
@@ -31,11 +34,16 @@ class Command(ABC):
                 deposit <amount_of_money>
                 help
                 list_offerings
+                get_asset_info <offering_code>
                 """
 
     @abstractmethod
     def get_wallet_summary(self, arguments: list) -> str:
         pass
+
+    @staticmethod
+    def get_asset_info(offering_code: str) -> str:
+        return str(CryptocurrencyCoinsAPIClient.get_specific_currency_data(offering_code).json())
 
     @abstractmethod
     def sign_up(self, arguments: list) -> str:
@@ -108,3 +116,4 @@ class Command(ABC):
                      asset or an appropriate message for the failure.
         """
         pass
+

@@ -2,10 +2,16 @@
     {
         "username": "stiliyan",
         "password": "password1",
-        "money": 6514.889130830037,
+        "money": 4347.426291494547,
         "assets": {
-            "BTC": 3.0
+            "BTC": 3.1
         }
+    },
+    {
+        "username": "teodor1234",
+        "password": "password4",
+        "money": 0,
+        "assets": {}
     },
     {
         "username": "bobi",
@@ -14,11 +20,5 @@
         "assets": {
             "BTC": 6.3455
         }
-    },
-    {
-        "username": "teodor1234",
-        "password": "password4",
-        "money": 0,
-        "assets": {}
     }
 ]

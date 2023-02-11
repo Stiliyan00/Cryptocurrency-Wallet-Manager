@@ -69,6 +69,8 @@ class CryptocurrencyWalletServer:
             return self.__command.get_wallet_summary(arguments)
         elif command == 'list_offerings':
             return self.__command.list_offerings()
+        elif command == 'get_asset_info':
+            return self.__command.get_asset_info(arguments[0])
         # TODO()
         # This should not be like this because we should store the data only if the server is disconnected but not
         # is a single user is disconnected
