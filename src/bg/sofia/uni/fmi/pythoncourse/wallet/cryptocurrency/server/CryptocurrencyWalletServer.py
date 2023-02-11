@@ -1,3 +1,4 @@
+import os
 import socket
 
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.CryptocurrencyWallet import CryptocurrencyWallet
@@ -11,8 +12,7 @@ class CryptocurrencyWalletServer:
     SERVER_PORT = 7777  # initiate port no above 1024
     UNKNOWN_COMMAND = "[ Unknown command ]"
     MESSAGE_COMMAND_INDEX = 0
-    USER_DATA_PATH = '/Users/stiliqniliev/Desktop/university/semester_7/PythonCourse2022/projects/Cryptocyrrency' \
-                     '-Wallet-Manager/Cryptocurrency-Wallet-Manager/data/users_data.txt'
+    USER_DATA_PATH = os.path.join('..', '..', '..', '..', '..', '..', '..', '..', '..', 'data', 'users_data.txt')
 
     def __init__(self):
         self.__wallet: CryptocurrencyWallet = DefaultCryptocurrencyWallet(self.USER_DATA_PATH)
