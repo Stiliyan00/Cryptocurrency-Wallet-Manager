@@ -29,6 +29,7 @@ class CryptocurrencyWalletClient:
 
             message = input(" -> ")  # again take input
 
+        message += f' {self.__username}'
         client_socket.send(message.encode())
         client_socket.close()  # close the connection
 

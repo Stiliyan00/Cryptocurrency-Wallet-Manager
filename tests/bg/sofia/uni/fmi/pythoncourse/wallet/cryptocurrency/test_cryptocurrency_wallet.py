@@ -1,9 +1,6 @@
 import json
 import os
-import tempfile
 import unittest
-from pathlib import Path
-from unittest import mock
 
 import pytest
 
@@ -15,7 +12,6 @@ from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.exceptions.UserDoes
     UserDoesNotExistException
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.StandardUser import StandardUser
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.User import User
-from tests.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.user.test_user import mocked_requests_get
 
 
 class MyTestCase(unittest.TestCase):
