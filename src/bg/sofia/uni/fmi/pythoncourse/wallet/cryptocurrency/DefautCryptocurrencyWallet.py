@@ -1,6 +1,5 @@
 import json
 import os
-import tempfile
 from datetime import datetime, date
 
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.CryptocurrencyWallet import CryptocurrencyWallet
@@ -106,7 +105,8 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
         for i in json_str:
             # not optimal at all
             date_object = datetime.strptime(i['data_end'], '%Y-%m-%d').date()
-            if i['type_is_crypto'] == 1 and not date_object < datetime.strptime(date.today().__str__(), '%Y-%m-%d').date():
+            if i['type_is_crypto'] == 1 and not date_object < datetime.strptime(date.today().__str__(),
+                                                                                '%Y-%m-%d').date():
                 try:
                     price_usd = \
                         CryptocurrencyCoinsAPIClient.get_specific_rate_of_currency(i['asset_id'], 'USD').json()['rate']

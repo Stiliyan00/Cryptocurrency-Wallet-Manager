@@ -10,6 +10,7 @@ class CryptocurrencyWallet(ABC):
         :param username The user's username we want to find in our database of username.
         :return: The user with this username or None if there is no such user.
         """
+
     @abstractmethod
     def register(self, username: str, password: str):
         """

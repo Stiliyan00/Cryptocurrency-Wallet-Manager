@@ -116,4 +116,3 @@ class Command(ABC):
                      asset or an appropriate message for the failure.
         """
         pass
-

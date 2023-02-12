@@ -1,4 +1,3 @@
-import json
 from json import JSONEncoder
 
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.repository.CryptocurrencyCoinsAPIClient import \

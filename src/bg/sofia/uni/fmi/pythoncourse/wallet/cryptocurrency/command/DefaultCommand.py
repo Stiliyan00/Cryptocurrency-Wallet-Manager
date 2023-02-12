@@ -61,7 +61,6 @@ class DefaultCommand(Command):
     def deposit_money(self, arguments: list) -> str:
         if len(arguments) != 2:
             return '[ Unknown command ]'
-        # TODO('To check if this line requires validation!')
         money_to_deposit: float = float(arguments[0])
         username: str = arguments[1]
         user: User = self.__wallet.find_user_by_username(username)

@@ -1,7 +1,7 @@
 import os
 import socket
-
 from _thread import *
+
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.CryptocurrencyWallet import CryptocurrencyWallet
 from src.bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency.DefautCryptocurrencyWallet import \
     DefaultCryptocurrencyWallet
@@ -45,7 +45,7 @@ class CryptocurrencyWalletServer:
             conn, address = server_socket.accept()  # accept new connection
             print("Connection from: " + str(address))
             # receive data stream. it won't accept data packet greater than 1024 bytes
-            start_new_thread(self.multi_threaded_client, (conn, address, ))
+            start_new_thread(self.multi_threaded_client, (conn, address,))
 
         self.__wallet.store_users_data()
         conn.close()  # close the connection
@@ -86,9 +86,6 @@ class CryptocurrencyWalletServer:
             return self.__command.list_offerings()
         elif command == 'get_asset_info':
             return self.__command.get_asset_info(arguments[0])
-        # TODO()
-        # This should not be like this because we should store the data only if the server is disconnected but not
-        # is a single user is disconnected
         elif command == 'disconnect':
             username = arguments[0]
             self.__currently_logged_users.remove(username)
