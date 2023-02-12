@@ -34,7 +34,7 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
             for user_str in users_data_json:
                 temp_user: User = custom_standard_user_decoder(user_str)
                 self.__users_set.add(temp_user)
-        except json.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError and KeyError:
             raise ValueError('Invalid data in database!')
 
     def __validate_username(self, username: str):
@@ -52,9 +52,9 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
         if len(password) < self.PASSWORD_MINIMUM_LENGTH:
             raise ValueError('Invalid password! Password but be at least 8 symbols!')
 
-        if len(list(filter(lambda x: x in DefaultCryptocurrencyWallet.PASSWORD_SPECIAL_SYMBOLS, list(password)))) == 0:
-            ValueError('Invalid password! Password should contain at least one symbol from the '
-                       'following: ' + DefaultCryptocurrencyWallet.PASSWORD_SPECIAL_SYMBOLS.__str__())
+        if not any(x in list(password) for x in DefaultCryptocurrencyWallet.PASSWORD_SPECIAL_SYMBOLS):
+            raise ValueError('Invalid password! Password should contain at least one symbol from the following: ' +
+                             DefaultCryptocurrencyWallet.PASSWORD_SPECIAL_SYMBOLS.__str__())
 
     def find_user_by_username(self, username: str):
         if not username:
@@ -120,6 +120,3 @@ class DefaultCryptocurrencyWallet(CryptocurrencyWallet):
 
     def get_all_users(self) -> set:
         return self.__users_set.copy()
-
-
-print(tempfile.TemporaryDirectory().name)

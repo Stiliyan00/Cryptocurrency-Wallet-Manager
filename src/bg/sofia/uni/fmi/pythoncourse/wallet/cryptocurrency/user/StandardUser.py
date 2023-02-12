@@ -85,6 +85,17 @@ class StandardUser(User):
         for key in self.__dict__:
             yield key[len('_StandardUser__'):], getattr(self, key)
 
+    def __eq__(self, other):
+        """Overrides the default implementation"""
+        if isinstance(other, StandardUser):
+            return self.__username == other.__username and self.__password == other.__password and \
+                   self.__money == other.__money and self.__assets.__eq__(other.__assets)
+        return False
+
+    def __hash__(self):
+        # The hashing will user the username because it should be unique:
+        return hash(self.__username)
+
 
 class StandardUserEncoder(JSONEncoder):
     def default(self, o):
