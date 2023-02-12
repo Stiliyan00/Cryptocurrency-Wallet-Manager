@@ -118,3 +118,49 @@
 - Сървърът пази информацията за потребителите и техните портфейли по начин, който му позволява след спиране или рестартиране да може да зареди тази информация отново.
 - При неправилно използване на програмата, на потребителя да се извеждат подходящи съобщения за грешка.
 - Валидацията на потребителския вход.
+  
+  ## Файлова артектура:
+    ```bash
+           src
+            └─ bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency
+                ├─ client
+                |     └─ CryptocurrencyWalletClient.py
+                |     
+                |       
+                ├─ command
+                |     ├─ exceptions
+                |     |       └─ InvalidCryptocurrencyCommandException.py
+                |     |
+                |     ├─ Command.py
+                |     └─ DefaultCommand.py
+                |
+                ├─ exceptions
+                |     ├─ PasswordIsNotCorrectException.py
+                |     ├─ UserAlreadyExistsException.py
+                |     └─ UserDoesNotExistException.py
+                |
+                |
+                ├─ repository
+                |     └─ CryptocurrencyCoinsAPIClient.py
+                |
+                ├─ server
+                |     └─ CryotocurrencyWalletServer.py
+                |
+                ├─ user
+                |     ├─ exceptions
+                |     |       ├─ CryptocurrencyDoesNotExistException.py
+                |     |       ├─ NotEnoughMoneyError.py
+                |     |       └─ UserDoesNotHaveCryptocurrencyException.py
+                |     |
+                |     ├─ StandardUser.py
+                |     └─ User.py
+                |
+                ├─ CryptocurrencyWallet.py
+                └─ DefaultCryptocurrencyWallet.py
+           test
+            └─ bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency
+                ├─ user
+                |    └─ test_user.py
+                |
+                └─ test_cryptocurrency_wallet.py
+    ```
