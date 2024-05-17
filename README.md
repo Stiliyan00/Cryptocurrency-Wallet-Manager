@@ -1,16 +1,16 @@
 # Cryptocurrency-Wallet-Manager
 
-## Кратко описание:
-Клиент-сървър приложение с функционалност, което симулира личен портфейл за криптовалути. Приложението ще приема потребителски команди, изпраща ги за обработка на сървъра, приема отговора му и го предоставя на потребителя в четим формат(на терминала, уеб платформата или UI-a).
+## Brief description:
+A client-server application with functionality that simulates a personal cryptocurrency wallet. The application will accept user commands, send them to the server for processing, accept its response and provide it to the user in a readable format(on the terminal, web platform or UI).
 
-Криптовалутите са един от най-популярните варианти за инвестиране в момента,а нашият криптовалутният портфейл цели улесняване както на опитни инвеститори, така и на любителите.
+Cryptocurrencies are one of the most popular options for investing right now, and our cryptocurrency portfolio aims to make it easier for both experienced investors and amateurs.
 
-### Функционалности
-#### (Засега ще разглеждаме варианта за конзолно приложение.)
+### Functionalities
+#### (For now, we will be looking at the console application option.)
 
 - **sing-up**
-  Регистрация на потребител с username и password; Регистрираните потребители се пазят във файл при сървъра - той служи като база от данни. При спиране и
-  повторно пускане, сървърът може да зареди в паметта си вече регистрираните потребители.
+  User registration with username and password; Registered users are stored in a file on the server - it serves as a database. At shutdown and
+  restart, the server can load the already registered users into its memory.
         
         $ signup <username> <password>
        
@@ -20,49 +20,49 @@
         $ login <username> <password>
               
 - **help**
-  За удобството на потребителя е предоставена и команда, която да му показва всички налични команди, който може да използва в конкретния момент:
+  For the convenience of the user, a command is also provided to show him all available commands he can use at that particular moment:
         
         $ help
  
-- Регистриран потребител може да:
-    - **deposit-money** - добавя определена сума пари към портфейла на потребителя. Тъй като API-то, което ще използваме в задачата, работи с долари, ще    
-      приемем, че сумите, които депозираме, ще са в долари. Например:
+- A registered user can:
+    - **deposit-money** - adds a certain amount of money to the user's wallet. Since the API that we will use in the task works with dollars, we will    
+      assume that the amounts we deposit will be in dollars. For example:
         ```bash
         $ deposit-money 10000.00
         ```
-    - **list-offerings** - предоставя информацията за всички налични криптовалути, от които потребителят може да купува. Информацията за наличните валути 
-      взимаме от [CoinAPI-то](#CoinAPI)-то.
+    - **list-offerings** - provides information about all available cryptocurrencies from which the user can buy. The information about the available currencies 
+      we get from [CoinAPI](#CoinAPI).
 
         ```bash
         $ clist-offerings
         ```
 
-    - **buy** - купува количество от дадена криптовалута за определената сума пари. Сумата трябва да е налична в портфейла на потребителя.
+    - **buy** - buys a quantity of a given cryptocurrency for the specified amount of money. The amount must be available in the user's wallet.
         ```bash
         $ buy --offering=<offering_code> --money=<amount>
         ```
-    - **sell** - продава конкрента криптовалута. Сумата, получена от печалбата, остава в портфейла на потребителя.
+    - **sell** - sells concrent cryptocurrency. The amount received from the profit remains in the user's wallet.
         ```bash
         $ sell --offering=<offering_code>
         ```
-    - **get-wallet-summary** - предоставя цялостна информацията за портфейла на потребителя - информация за всички активни инвестиции към момента на изпълнение на командата, за парите в портфейла му.
+    - **get-wallet-summary** - provides comprehensive information about the user's portfolio - information about all active investments at the time of command execution, about the money in his portfolio.
         ```bash
         $ get-wallet-summary
         ```
-    - **get-wallet-overall-summary** - предоставя информацията за цялостната печалба/загуба от инвестициите на потребителя. Приложението сравнява цената за всяка криптовалута от момента на купуване и текущата ѝ цена, за да получи цялостната информация.
+    - **get-wallet-overall-summary** - provides information on the overall profit/loss of the user's investment. The app compares the price for each cryptocurrency from the time of purchase and its current price to get the overall information.
         ```bash
         $ get-wallet-overall-summary
         ```
     ## CoinAPI 
-    Информацията за криптовалутите, от която сървърът има нужда, е достъпна чрез публично безплатно REST API - [CoinAPI](https://www.coinapi.io/).
+    The cryptocurrency information the server needs is available via a public free REST API - [CoinAPI](https://www.coinapi.io/).
 
-    Заявките към REST API-то изискват автентикация с API key, какъвто може да получите като се регистрирате [тук](https://www.coinapi.io/pricing?apikey).
+    Requests to the REST API require authentication with an API key, which you can get by registering [тук](https://www.coinapi.io/pricing?apikey).
 
-    *Note*: Функционалността, която предлага  API-то, е доста обширна, но ние ще се фокусираме на описаната [тук](https://docs.coinapi.io/#list-all-assets). Тя би била достатъчна за функционалността на проекта. 
+    *Note*: The functionality offered by the API is quite extensive, but we will focus on the one described [here](https://docs.coinapi.io/#list-all-assets). It would be sufficient for the functionality of the project. 
 
-    Следните endpoints от API-то биха ви били полезни:
-    - **GET /v1/assets** - връща инфомрация за всички достъпи asset-и в JSON формат
-    - **GET /v1/assets/{asset_id}** - връща инфромация за конкретен asset в JSON формат.
+    The following API endpoints would be useful:
+    - **GET /v1/assets** - returns information about all accessed assets in JSON format
+    - **GET /v1/assets/{asset_id}** - returns information about a specific asset in JSON format.
 
      - **Пример:**
     ```bash
@@ -94,8 +94,8 @@
     ```
 
 
-- При всяко влизане на потребителя в системата, той получава известия, ако неговите инвестиции са покачили или понижили.
-Например:
+- Each time a user logs in, they receive notifications if their investments have gone up or down.
+For example:
     ```bash
     $ login bobi bobislongpassword
     Successful login!
@@ -112,14 +112,14 @@
     Your investment in BTC has droped from 5345.00 to 5343.21.
    
     
-- Сървърът ще може да обслужва множество клиенти паралелно.  
-- Сървърът ще кешира получената от API-то информация като тя ще е валидна само за период от 30 минути, заради постоянно променящата се цена на
-  криптовалутите.
-- Сървърът пази информацията за потребителите и техните портфейли по начин, който му позволява след спиране или рестартиране да може да зареди тази информация отново.
-- При неправилно използване на програмата, на потребителя да се извеждат подходящи съобщения за грешка.
-- Валидацията на потребителския вход.
+- The server will be able to serve multiple clients in parallel.  
+- The server will cache the information received from the API and it will only be valid for a period of 30 minutes because of the constantly changing cost of
+  cryptocurrencies.
+- The server stores information about users and their wallets in a way that allows it to be able to reload that information after a shutdown or reboot.
+- If the program is used incorrectly, appropriate error messages are displayed to the user.
+- User Login Validation.
   
-  ## Файлова артектура:
+  ## File Architecture:
     ```bash
            src
             └─ bg.sofia.uni.fmi.pythoncourse.wallet.cryptocurrency
